@@ -7,7 +7,7 @@ const Navbar = () => {
     const user = true
     return (
         <AppBar position="static" color={"secondary"}>
-            <Toolbar>
+            <Toolbar variant={"dense"}>
                 <Grid container justifyContent={"flex-end"}>
                     {user ?
                         <Button variant={"outlined"}>ВЫйти</Button>
