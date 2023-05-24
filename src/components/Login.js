@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Box, Button, Container, Grid} from "@material-ui/core";
 
 const Login = () => {
+
+    const {auth} = useContext(Context)
+
     return (
         <Container>
             <Grid style={{height: window.innerHeight - 50}} container justifyContent={"center"} alignItems={"center"}>
