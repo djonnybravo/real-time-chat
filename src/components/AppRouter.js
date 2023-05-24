@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch, Redirect} from 'react-router-dom'
+import {Route, Routes, Navigate} from 'react-router-dom'
 import {privateRoutes, publicRoutes} from "../routes";
 import {CHAT_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 
@@ -7,21 +7,28 @@ const AppRouter = () => {
     const user = true
     return user ?
         (
-            <Switch>
+            <Routes>
                 {privateRoutes.map( ({path, component}) =>
-                        <Route path={path} component={component} exact={true}/>
+                        <Route path={path} element={component} exact={true}/>
                 )}
-                <Redirect to={CHAT_ROUTE}/>
-            </Switch>
+
+                <Route
+                    path="*"
+                    element={<Navigate to={CHAT_ROUTE} replace />}
+                />
+            </Routes>
         )
         :
         (
-            <Switch>
+            <Routes>
                 {publicRoutes.map( ({path, component}) =>
-                    <Route path={path} component={component} exact={true}/>
+                    <Route path={path} element={component} exact={true}/>
                 )}
-                <Redirect to={LOGIN_ROUTE}/>
-            </Switch>
+                <Route
+                    path="*"
+                    element={<Navigate to={LOGIN_ROUTE} replace />}
+                />
+            </Routes>
         )
 };
 
