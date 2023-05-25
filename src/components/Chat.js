@@ -1,73 +1,72 @@
 import React, {useContext, useState} from 'react';
 import {Context} from "../index";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {Avatar, Button, Container, Grid, TextField} from "@material-ui/core";
+import {Avatar, Button, Container, Grid} from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
 import {useCollectionData} from "react-firebase-hooks/firestore";
 import Loader from "./Loader";
 import firebase from "firebase/compat/app";
 
 
 const Chat = () => {
-
     const {auth, firestore} = useContext(Context)
     const [user] = useAuthState(auth)
     const [value, setValue] = useState('')
-    const [messages, loading ] = useCollectionData(
+    const [messages, loading] = useCollectionData(
         firestore.collection('messages').orderBy('createdAt')
     )
 
-    console.log(firestore.collection('messages'))
-
-
-    console.log(messages)
     const sendMessage = async () => {
         firestore.collection('messages').add({
             uid: user.uid,
             displayName: user.displayName,
             photoURL: user.photoURL,
             text: value,
-            createdAT: firebase.firestore.FieldValue.serverTimestamp()
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
         })
         setValue('')
     }
 
-
-    if(loading) {
+    if (loading) {
         return <Loader/>
     }
 
     return (
         <Container>
-            <Grid style={{height: window.innerHeight - 50, marginTop: "10px"}} container justifyContent={"center"} alignItems={"center"}>
-
-                <div style={{width: '80%', height: '70vh', border: '1px solid gray', overflowY: 'auto'}}>
+            <Grid container
+                  justify={"center"}
+                  style={{height: window.innerHeight - 50, marginTop: 20}}>
+                <div style={{width: '80%', height: '60vh', border: '1px solid gray', overflowY: 'auto'}}>
                     {messages.map(message =>
                         <div style={{
                             margin: 10,
-                            border: user.uid === message.uid ? '2px solid green' : '2px solid red',
+                            border: user.uid === message.uid ? '2px solid green' : '2px solid blue',
                             marginLeft: user.uid === message.uid ? 'auto' : '10px',
-                            width: 'fit-content'
-
+                            width: 'fit-content',
+                            padding: 5,
                         }}>
                             <Grid container>
-                                <Avatar src={message.photoUrl}/>
+                                <Avatar src={message.photoURL}/>
                                 <div>{message.displayName}</div>
-
                             </Grid>
                             <div>{message.text}</div>
                         </div>
                     )}
                 </div>
-
-                <Grid container direction={"column"} alignItems={"flex-end"} style={{width: '80%'}}>
+                <Grid
+                    container
+                    direction={"column"}
+                    alignItems={"flex-end"}
+                    style={{width: '80%'}}
+                >
                     <TextField
-                        variant={"outlined"}
-                        maxRows={2}
                         fullWidth
+                        rowsMax={2}
+                        variant={"outlined"}
                         value={value}
-                        onChange={e => {setValue(e.currentTarget.value)}}
+                        onChange={e => setValue(e.target.value)}
                     />
-                    <Button onClick={sendMessage} >Отправить</Button>
+                    <Button onClick={sendMessage} variant={"outlined"}>Отправить</Button>
                 </Grid>
             </Grid>
         </Container>
