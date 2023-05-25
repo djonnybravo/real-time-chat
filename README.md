@@ -1,5 +1,3 @@
-## [GH-PAGES-DEMO](https://djonnybravo.github.io/real_time_chat)
-
 
 ## React real-time chat
 
