@@ -1,10 +1,10 @@
 import React from 'react';
+import {Avatar, Grid} from "@material-ui/core";
 
-const Message = () => {
+
+const Message = ({messages}) => {
     return (
-        <div>
-            Message
-        </div>
+        <div></div>
     );
 };
 
